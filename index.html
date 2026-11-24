@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B1D26">
+<title>Laporan Harian Host Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">INDO GROUP</div>
+    <h1>Laporan Harian Host Live</h1>
+    <p>Isi satu laporan untuk setiap sesi dan platform. Batas kirim: <b>H+1 pukul 17:00 WIB</b>.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="demo" class="banner info" hidden>Mode demo: data contoh, laporan tidak disimpan.</div>
+  <div id="loadErr" class="banner err" hidden></div>
+
+  <form id="form" novalidate>
+   <div class="col col-l">
+    <section class="card c-host">
+      <h2>Host &amp; Waktu Live</h2>
+      <div class="row2">
+        <label class="field">
+          <span>Tanggal Live</span>
+          <input type="date" id="tanggal" required>
+        </label>
+        <label class="field">
+          <span>Nama Host Live</span>
+          <select id="host" required><option value="">Memuat daftar host…</option></select>
+        </label>
+      </div>
+      <div class="row2">
+        <label class="field"><span>Jam Mulai Live</span><input type="time" id="mulai" required></label>
+        <label class="field"><span>Jam Selesai Live</span><input type="time" id="selesai" required></label>
+      </div>
+      <p id="durasi" class="hint"></p>
+    </section>
+
+    <section class="card c-plat">
+      <h2>Platform &amp; Brand</h2>
+      <div class="field">
+        <span>Platform</span>
+        <div class="seg" role="radiogroup" id="platform">
+          <button type="button" data-v="TikTok" role="radio">TikTok</button>
+          <button type="button" data-v="Shopee" role="radio">Shopee</button>
+        </div>
+      </div>
+      <div class="field">
+        <span>Brand</span>
+        <div class="brandbox">
+          <select id="brand" disabled></select>
+          <label class="check"><input type="checkbox" id="bantu"> Live untuk brand lain (bantu)</label>
+        </div>
+        <small class="hint">Brand terisi otomatis dari ROSTER. Centang hanya jika hari ini kamu live untuk brand lain.</small>
+      </div>
+    </section>
+
+   </div>
+   <div class="col col-r">
+    <div id="status" class="status c-status" hidden></div>
+    <section class="card c-perf">
+      <h2>Performa Live</h2>
+      <div class="grid">
+        <label class="field"><span>Dilihat / Impressions</span><input inputmode="numeric" id="impressions" required></label>
+        <label class="field"><span>Jumlah Penonton / Views</span><input inputmode="numeric" id="views" required></label>
+        <label class="field"><span>Penonton Aktif / Viewers</span><input inputmode="numeric" id="viewers" required></label>
+        <label class="field"><span>Jumlah Share</span><input inputmode="decimal" id="share" data-desimal required></label>
+        <label class="field"><span id="klikLbl">Klik Produk</span><input inputmode="decimal" id="klik" required><small class="hint" id="klikHint"></small></label>
+        <label class="field"><span>Jumlah Produk Terjual</span><input inputmode="numeric" id="terjual" required></label>
+      </div>
+    </section>
+
+    <div id="formErr" class="banner err c-err" hidden></div>
+    <div class="c-submit">
+      <button type="submit" id="kirim" class="btn">Kirim Laporan</button>
+      <p class="hint center">Tekan <kbd>Enter</kbd> untuk pindah ke kotak berikutnya · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> untuk kirim</p>
+    </div>
+   </div>
+  </form>
+
+  <section id="done" class="card done" hidden>
+    <div class="tick">✓</div>
+    <h2>Laporan terkirim</h2>
+    <p id="doneTxt"></p>
+    <div class="actions">
+      <button class="btn" id="lagiPlatform">Kirim platform lain (sesi sama)</button>
+      <button class="btn ghost" id="lagiBaru">Kirim sesi lain</button>
+    </div>
+  </section>
+</main>
+<footer>Data masuk langsung ke Google Sheet laporan Host Live.</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
