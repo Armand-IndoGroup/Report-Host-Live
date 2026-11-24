@@ -24,6 +24,8 @@ apps-script/Code.gs                               ← penghubung ke Google Sheet
 - **Keyboard**: `Enter` pindah ke kotak berikutnya, `Ctrl`+`Enter` kirim.
 - **Angka**: angka bulat boleh pakai titik ribuan (`12.500`); Jumlah Share & Klik Produk Shopee boleh desimal (`13,2`).
 
+- **Checklist per tanggal**: peringatan menampilkan tabel Sesi × Platform (✓ masuk, ✗ belum, *bebas* dibebaskan admin, – tidak wajib). Platform wajib mengikuti kebiasaan host di bulan itu (TikTok **dan** Shopee bila > 50% hari kerjanya live di keduanya).
+- **Tampilan Batik Frost** (glassmorphism): kartu kaca di atas latar krem bermotif bunga logo; blur otomatis dimatikan di perangkat lemah.
 - **Tema terang / gelap**: otomatis mengikuti pengaturan HP/komputer, atau pilih sendiri lewat tombol di pojok kanan atas (Otomatis → Terang → Gelap); pilihan diingat di perangkat itu.
 - **Ikon tab browser** memakai simbol logo Batik Indonesia Group (`img/`).
 

@@ -77,16 +77,29 @@
       box.className = 'status c-status warn';
       const MAKS = 5, semua = s.belum.length > MAKS && box.dataset.semua === h;
       const tampil = semua ? s.belum : s.belum.slice(0, MAKS);
-      html += `<b>⚠ Laporan yang belum masuk (${rentang}):</b><ul>` +
-        tampil.map(b => `<li><b style="display:inline">${fmtTgl(b.tanggal)}</b> — ${b.detail || 'Belum ada laporan'}${b.terlambat ? ' · <span style="color:var(--err)">sudah lewat batas</span>' : ''}</li>`).join('') + '</ul>' +
+      html += `<div class="judul">⚠ Laporan yang belum lengkap (${rentang})</div>` +
+        `<div class="legend"><span><i class="ic ya">✓</i> masuk</span><span><i class="ic tidak">✗</i> belum</span><span><i class="ic bebas">bebas</i> dibebaskan admin</span><span><i class="ic na">–</i> tidak wajib</span></div>` +
+        tampil.map(kartuHari).join('') +
         (s.belum.length > MAKS ? `<button type="button" class="link" id="lihatSemua">${semua ? 'Tampilkan lebih sedikit' : `Lihat semua (${s.belum.length})`}</button><br>` : '') +
         '<small>Kalau memang tidak live di sesi itu (full konten, izin, dll.), hubungi admin.</small>';
-    } else { box.className = 'status c-status ok'; html += `<b>Semua laporan ${rentang} sudah masuk ✓</b>`; }
+    } else { box.className = 'status c-status ok'; html += `<div class="judul" style="margin:0">✓ Semua laporan ${rentang} sudah lengkap</div>`; }
     if (hariIni.length) html += `<div style="margin-top:8px">Sudah terkirim untuk ${fmtTgl(tgl)}:<ul>` +
       hariIni.map(r => `<li>${r.mulai}–${r.selesai} · ${r.platform}</li>`).join('') + '</ul></div>';
     box.innerHTML = html;
     const t = document.getElementById('lihatSemua');
     if (t) t.addEventListener('click', () => { box.dataset.semua = box.dataset.semua === h ? '' : h; cekStatus(); });
+  }
+
+  /* ---------- checklist per tanggal ---------- */
+  const IK = { '1': '<i class="ic ya" title="sudah masuk">✓</i>', '0': '<i class="ic tidak" title="belum masuk">✗</i>', 'x': '<i class="ic bebas" title="dibebaskan admin">bebas</i>', '-': '<i class="ic na" title="tidak wajib">–</i>' };
+  function kartuHari(b) {
+    const cek = b.cek || [];
+    const plat = ['TikTok', 'Shopee'].filter(p => cek.some(r => r[p] && r[p] !== '-'));
+    const tabel = cek.length && plat.length ? `<table class="cek"><tr><th>Sesi</th><th></th>${plat.map(p => `<th>${p}</th>`).join('')}</tr>` +
+      cek.map(r => `<tr><td><b>${r.sesi}</b></td><td class="jam">${r.jam && r.jam !== '–' ? r.jam : (r.sesi === 'Sesi lain' ? 'belum masuk' : '')}</td>${plat.map(p => `<td>${IK[r[p]] || IK['-']}</td>`).join('')}</tr>`).join('') + '</table>'
+      : `<div>${b.detail || 'Belum ada laporan'}</div>`;
+    const ket = cek.some(r => r.sesi === 'Sesi masuk') ? `<div class="hint">${b.detail}</div>` : '';
+    return `<div class="hari"><div class="hari-top"><b>${fmtTgl(b.tanggal)}</b>${b.terlambat ? '<span class="lewat">lewat batas</span>' : ''}</div>${tabel}${ket}</div>`;
   }
 
   /* ---------- tampilan ---------- */
@@ -233,5 +246,6 @@
   let tema = 'auto'; try { tema = localStorage.getItem('tema') || 'auto'; } catch (e) {}
   setTema(tema);
   $('tema').addEventListener('click', () => { tema = { auto: 'light', light: 'dark', dark: 'auto' }[tema] || 'auto'; setTema(tema); });
+  try { if ((navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 3) document.documentElement.classList.add('lite'); } catch (e) {}
   init();
 })();
