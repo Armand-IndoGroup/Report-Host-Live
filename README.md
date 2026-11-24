@@ -14,8 +14,8 @@ apps-script/Code.gs                               ← penghubung ke Google Sheet
 - **Brand otomatis** dari ROSTER; centang "Live untuk brand lain" bila memang membantu brand lain.
 - **Cegah laporan dobel**: sesi yang sama (host + tanggal + platform + jam) ditolak; jam yang bertabrakan diberi peringatan.
 - **Cek jam & tanggal**: tanggal tidak boleh di masa depan, durasi ditampilkan, lewat tengah malam dikenali.
-- **Pengingat per tanggal & sesi**: setelah memilih nama, host melihat 7 hari terakhir yang laporannya belum masuk,
-  termasuk sesi/platform yang belum lengkap (mis. "Sesi 2 Shopee" atau "Baru 1 dari 2 sesi").
+- **Pengingat per tanggal & sesi**: setelah memilih nama, host melihat laporan yang belum masuk
+  sepanjang bulan dari Tanggal Live yang dipilih (tanggal 1–7 ikut bulan sebelumnya), termasuk sesi/platform yang belum lengkap (mis. "Sesi 2 Shopee" atau "Baru 1 dari 2 sesi").
   Sumbernya sheet tersembunyi `SESI` di Google Sheet. Sesi yang dibebaskan admin (PENGATURAN tabel D)
   dan izin setengah hari di ROSTER tidak dihitung.
 - Setelah kirim: tombol **"Kirim platform lain (sesi sama)"** — tanggal, nama, jam tetap terisi.
@@ -40,7 +40,7 @@ apps-script/Code.gs                               ← penghubung ke Google Sheet
 2. Repo → **Settings → Pages** → Source: *Deploy from a branch* → `main` / `(root)` → Save.
 3. Link website: `https://<username>.github.io/<nama-repo>/`.
 
-> Kalau `API_URL` kosong, website berjalan dalam **mode demo** (tidak menyimpan apa pun) — aman untuk dicoba.
+> Kalau `API_URL` kosong atau salah, website menampilkan pesan merah **"belum tersambung"** dan tombol kirim dikunci.
 
 ### Memperbarui Apps Script (wajib setelah versi ini)
 Tempel ulang `apps-script/Code.gs` lalu **Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy**.

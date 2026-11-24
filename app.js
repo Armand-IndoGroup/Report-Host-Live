@@ -1,6 +1,6 @@
 (function () {
   const API = (window.API_URL || '').trim();
-  const DEMO = !API;
+  const TERSAMBUNG = /^https:\/\/script\.google\.com\/.+\/exec$/.test(API);
   const $ = (id) => document.getElementById(id);
   const state = { roster: [], brands: [], platform: '', today: '' };
 
@@ -28,15 +28,6 @@
     return r.json();
   }
 
-  /* ---------- data contoh untuk mode demo ---------- */
-  const demoMeta = () => ({
-    ok: true, today: isoToday(),
-    brands: ['Batik 77', 'Indonesia', 'Kenangan Fashion', 'Menteri', 'Oliver', 'Rama Shinta', 'Taksaka'],
-    roster: [
-      ['Akbar', 'Menteri'], ['Bakti', 'Indonesia'], ['Damar', 'Indonesia'], ['Dipa', 'Taksaka'], ['Endah', 'Rama Shinta'],
-      ['Fitriyah', 'Oliver'], ['Hasmi', 'Oliver'], ['Mega', 'Kenangan Fashion'], ['Yazid', 'Batik 77'], ['Zammas', 'Batik 77']
-    ].map(([host, brand]) => ({ host, brand, status: 'Aktif', from: '2026-07-01', until: '2099-12-31' }))
-  });
 
   /* ---------- roster ---------- */
   function aktifPada(iso) {
@@ -75,21 +66,27 @@
     const my = ++statusReq;
     box.hidden = false; box.className = 'status c-status'; box.textContent = 'Mengecek laporanmu…';
     let s;
-    try { s = DEMO ? { ok: true, reports: [], belum: [{ tanggal: '2026-11-21', terlambat: true, detail: 'Sesi 2 Shopee' }, { tanggal: '2026-11-19', terlambat: true, detail: 'Baru 1 dari 2 sesi' }] } : await getJSON({ action: 'status', host: h }); }
+    try { s = await getJSON({ action: 'status', host: h, tanggal: $('tanggal').value || isoToday() }); }
     catch (e) { if (my === statusReq) box.hidden = true; return; }
     if (my !== statusReq || !s.ok) return;
     const tgl = $('tanggal').value;
     const hariIni = s.reports.filter(r => r.tanggal === tgl);
     let html = '';
+    const rentang = s.dari && s.sampai && s.sampai >= s.dari ? `${fmtTgl(s.dari)} – ${fmtTgl(s.sampai)}` : 'bulan ini';
     if (s.belum.length) {
       box.className = 'status c-status warn';
-      html += `<b>⚠ Laporan yang belum masuk (7 hari terakhir):</b><ul>` +
-        s.belum.map(b => `<li><b style="display:inline">${fmtTgl(b.tanggal)}</b> — ${b.detail || 'Belum ada laporan'}${b.terlambat ? ' · <span style="color:var(--err)">sudah lewat batas</span>' : ''}</li>`).join('') +
-        '</ul><small>Kalau memang tidak live di sesi itu (full konten, izin, dll.), hubungi admin.</small>';
-    } else { box.className = 'status c-status ok'; html += '<b>Semua laporan 7 hari terakhir sudah masuk ✓</b>'; }
+      const MAKS = 5, semua = s.belum.length > MAKS && box.dataset.semua === h;
+      const tampil = semua ? s.belum : s.belum.slice(0, MAKS);
+      html += `<b>⚠ Laporan yang belum masuk (${rentang}):</b><ul>` +
+        tampil.map(b => `<li><b style="display:inline">${fmtTgl(b.tanggal)}</b> — ${b.detail || 'Belum ada laporan'}${b.terlambat ? ' · <span style="color:var(--err)">sudah lewat batas</span>' : ''}</li>`).join('') + '</ul>' +
+        (s.belum.length > MAKS ? `<button type="button" class="link" id="lihatSemua">${semua ? 'Tampilkan lebih sedikit' : `Lihat semua (${s.belum.length})`}</button><br>` : '') +
+        '<small>Kalau memang tidak live di sesi itu (full konten, izin, dll.), hubungi admin.</small>';
+    } else { box.className = 'status c-status ok'; html += `<b>Semua laporan ${rentang} sudah masuk ✓</b>`; }
     if (hariIni.length) html += `<div style="margin-top:8px">Sudah terkirim untuk ${fmtTgl(tgl)}:<ul>` +
       hariIni.map(r => `<li>${r.mulai}–${r.selesai} · ${r.platform}</li>`).join('') + '</ul></div>';
     box.innerHTML = html;
+    const t = document.getElementById('lihatSemua');
+    if (t) t.addEventListener('click', () => { box.dataset.semua = box.dataset.semua === h ? '' : h; cekStatus(); });
   }
 
   /* ---------- tampilan ---------- */
@@ -152,12 +149,12 @@
     ANGKA.forEach(k => body[k] = num($(k).value, DESIMAL().includes(k)));
     const btn = $('kirim'); btn.disabled = true; btn.textContent = 'Mengirim…';
     try {
-      const res = DEMO ? { ok: true, telat: batasInfo(body.tanggal) } : await postJSON(body);
+      const res = await postJSON(body);
       if (!res.ok) return tampilErr(res.errors || ['Gagal mengirim.']);
       terakhir = body;
       $('doneTxt').innerHTML = `${body.host} · ${fmtTgl(body.tanggal)} · ${body.mulai}–${body.selesai} · <b>${body.platform}</b>` +
         (res.telat ? '<br><span style="color:var(--err)">Tercatat terlambat (lewat H+1 17:00).</span>' : '') +
-        (DEMO ? '<br><i>Mode demo: tidak disimpan.</i>' : '');
+        '';
       $('form').hidden = true; $('done').hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e) {
       tampilErr(['Koneksi gagal. Cek internet lalu coba kirim lagi — isianmu tidak hilang.']);
@@ -173,14 +170,16 @@
 
   /* ---------- mulai ---------- */
   async function init() {
-    $('demo').hidden = !DEMO;
     try {
-      const m = DEMO ? demoMeta() : await getJSON({ action: 'meta' });
+      if (!TERSAMBUNG) throw new Error('URL /exec di config.js belum diisi atau salah');
+      const m = await getJSON({ action: 'meta' });
       if (!m.ok) throw new Error(m.error);
       state.roster = m.roster; state.brands = m.brands; state.today = m.today || isoToday();
     } catch (e) {
-      $('loadErr').textContent = 'Daftar host gagal dimuat. Muat ulang halaman. (' + e.message + ')';
+      $('loadErr').innerHTML = '<b>Website belum tersambung ke Google Sheet.</b> Laporan tidak bisa dikirim — hubungi admin.<br><small>(' + e.message + ')</small>';
       $('loadErr').hidden = false;
+      $('kirim').disabled = true; $('kirim').textContent = 'Belum tersambung';
+      $('host').innerHTML = '<option value="">—</option>';
     }
     $('tanggal').value = state.today || isoToday();
     $('tanggal').max = isoToday();

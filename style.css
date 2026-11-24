@@ -63,3 +63,4 @@ input.bad,select.bad{border-color:var(--err);background:#fff8f8}
 .actions{display:grid;gap:10px;margin-top:16px}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:0 16px 28px}
 @media (max-width:959px){.c-submit .hint{display:none}}
+.link{background:none;border:0;padding:0;margin:6px 0 2px;font:inherit;font-size:13px;font-weight:600;color:var(--navy);text-decoration:underline;cursor:pointer}
