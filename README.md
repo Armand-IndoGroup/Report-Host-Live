@@ -24,6 +24,9 @@ apps-script/Code.gs                               ← penghubung ke Google Sheet
 - **Keyboard**: `Enter` pindah ke kotak berikutnya, `Ctrl`+`Enter` kirim.
 - **Angka**: angka bulat boleh pakai titik ribuan (`12.500`); Jumlah Share & Klik Produk Shopee boleh desimal (`13,2`).
 
+- **Tema terang / gelap**: otomatis mengikuti pengaturan HP/komputer, atau pilih sendiri lewat tombol di pojok kanan atas (Otomatis → Terang → Gelap); pilihan diingat di perangkat itu.
+- **Ikon tab browser** memakai simbol logo Batik Indonesia Group (`img/`).
+
 ## Pasang (sekali saja)
 
 ### 1. Apps Script (akun Google pemilik / editor sheet)
