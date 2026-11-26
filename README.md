@@ -33,6 +33,7 @@ apps-script/Code.gs                               ← penghubung ke Google Sheet
 - **Halaman sukses** menampilkan angka yang dikirim + laporan tanggal itu yang sudah masuk & yang masih kurang.
 - **Animasi memuat** (skeleton) saat daftar nama & peringatan dimuat.
 - **Peringatan angka/jam janggal** sebelum kirim (durasi > 6 jam atau < 15 menit, jam selesai lebih awal, Views > Impressions, Viewers > Views, semua angka 0, Terjual/Views jauh di atas rata-rata host 30 hari terakhir). Host bisa tetap kirim dengan tombol "Data sudah benar, kirim".
+- **Font Plus Jakarta Sans** untuk semua teks, angka berlebar seragam; teks kotak isian 16 px (HP tidak auto-zoom), teks minimal 13 px, kontras abu-abu lebih gelap, kartu kaca lebih solid, motif lebih samar.
 - **Tema terang / gelap**: otomatis mengikuti pengaturan HP/komputer, atau pilih sendiri lewat tombol di pojok kanan atas (Otomatis → Terang → Gelap); pilihan diingat di perangkat itu.
 - **Ikon tab browser** memakai simbol logo Batik Indonesia Group (`img/`).
 
