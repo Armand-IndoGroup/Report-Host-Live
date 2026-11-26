@@ -12,7 +12,7 @@
 <script>try{var t=localStorage.getItem('tema');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 <header class="hero">
@@ -35,15 +35,17 @@
         <label class="field">
           <span>Tanggal Live</span>
           <input type="date" id="tanggal" required>
+          <span class="tgl-teks" id="tglTeks"></span>
+          <span class="chips"><button type="button" class="chip" data-hari="0">Hari ini</button><button type="button" class="chip" data-hari="1">Kemarin</button></span>
         </label>
         <label class="field">
           <span>Nama Host Live</span>
-          <select id="host" required><option value="">Memuat daftar host…</option></select>
+          <select id="host" class="skel-field" required><option value="">Memuat daftar host…</option></select>
         </label>
       </div>
       <div class="row2">
-        <label class="field"><span>Jam Mulai Live</span><input type="time" id="mulai" required></label>
-        <label class="field"><span>Jam Selesai Live</span><input type="time" id="selesai" required></label>
+        <div class="field"><span>Jam Mulai Live</span><input type="hidden" id="mulai"><div class="jam" data-for="mulai"><select id="mulaiJ" aria-label="Jam mulai"></select><b>:</b><select id="mulaiM" aria-label="Menit mulai"></select></div></div>
+        <div class="field"><span>Jam Selesai Live</span><input type="hidden" id="selesai"><div class="jam" data-for="selesai"><select id="selesaiJ" aria-label="Jam selesai"></select><b>:</b><select id="selesaiM" aria-label="Menit selesai"></select></div></div>
       </div>
       <p id="durasi" class="hint"></p>
     </section>
@@ -84,7 +86,9 @@
     </section>
 
     <div id="formErr" class="banner err c-err" hidden></div>
+    <div id="formWarn" class="banner warn c-err" hidden></div>
     <div class="c-submit">
+      <div class="ringkas" id="ringkas"></div>
       <button type="submit" id="kirim" class="btn">Kirim Laporan</button>
       <p class="hint center">Tekan <kbd>Enter</kbd> untuk pindah ke kotak berikutnya · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> untuk kirim</p>
     </div>
@@ -95,6 +99,8 @@
     <div class="tick">✓</div>
     <h2>Laporan terkirim</h2>
     <p id="doneTxt"></p>
+    <div id="doneAngka" class="done-angka"></div>
+    <div id="doneHari" class="done-hari"></div>
     <div class="actions">
       <button class="btn" id="lagiPlatform">Kirim platform lain (sesi sama)</button>
       <button class="btn ghost" id="lagiBaru">Kirim sesi lain</button>
@@ -103,7 +109,7 @@
 </main>
 <footer>Data masuk langsung ke Google Sheet laporan Host Live.</footer>
 
-<script src="config.js?v=5"></script>
-<script src="app.js?v=5"></script>
+<script src="config.js?v=7"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>

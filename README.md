@@ -26,6 +26,13 @@ apps-script/Code.gs                               ← penghubung ke Google Sheet
 
 - **Checklist per tanggal**: peringatan menampilkan tabel Sesi × Platform (✓ masuk, ✗ belum, *bebas* dibebaskan admin, – tidak wajib). Platform wajib mengikuti kebiasaan host di bulan itu (TikTok **dan** Shopee bila > 50% hari kerjanya live di keduanya).
 - **Tampilan Batik Frost** (glassmorphism): kartu kaca di atas latar krem bermotif bunga logo; blur otomatis dimatikan di perangkat lemah.
+- **Tombol Hari ini / Kemarin** di bawah kolom tanggal, plus tanggal tertulis lengkap (mis. "Rabu, 25 November 2026").
+- **Jam 24 jam dipilih dari daftar** (jam 00–23, menit 00–59) — tidak ada lagi AM/PM.
+- **Error per kolom** muncul langsung di bawah kotaknya saat pindah kotak.
+- **HP**: header ringkas, peringatan dilipat jadi satu baris (ketuk "Lihat"), tombol Kirim selalu terlihat di bawah layar beserta ringkasan isian.
+- **Halaman sukses** menampilkan angka yang dikirim + laporan tanggal itu yang sudah masuk & yang masih kurang.
+- **Animasi memuat** (skeleton) saat daftar nama & peringatan dimuat.
+- **Peringatan angka/jam janggal** sebelum kirim (durasi > 6 jam atau < 15 menit, jam selesai lebih awal, Views > Impressions, Viewers > Views, semua angka 0, Terjual/Views jauh di atas rata-rata host 30 hari terakhir). Host bisa tetap kirim dengan tombol "Data sudah benar, kirim".
 - **Tema terang / gelap**: otomatis mengikuti pengaturan HP/komputer, atau pilih sendiri lewat tombol di pojok kanan atas (Otomatis → Terang → Gelap); pilihan diingat di perangkat itu.
 - **Ikon tab browser** memakai simbol logo Batik Indonesia Group (`img/`).
 
